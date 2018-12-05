@@ -1,0 +1,208 @@
+
+" Only do this part when compiled with support for autocommands.
+if has("autocmd")
+
+  " Enable file type detection.
+  " Use the default filetype settings, so that mail gets 'tw' set to 72,
+  " 'cindent' is on in C files, etc.
+  " Also load indent files, to automatically do language-dependent indenting.
+  filetype plugin indent on
+
+  " Put these in an autocmd group, so that we can delete them easily.
+  augroup vimrcEx
+  au!
+
+  autocmd FileType c,cpp : set cindent
+
+  " When editing a file, always jump to the last known cursor position.
+  " Don't do it when the position is invalid or when inside an event handler
+  " (happens when dropping a file on gvim).
+  "autocmd BufReadPost *
+    "\ if line("'\"") > 0 && line("'\"") <= line("$") |
+    "\   exe "normal g`\"" |
+    "\ endif
+
+  augroup END
+
+endif " has("autocmd")
+
+
+" Disable the command 'K' (keyword lookup) by mapping it
+" to an "empty command".  (thanks, Lawrence! :-):
+  map K :<CR>
+
+" When I let Vim write the current buffer I frequently mistype the
+" command ":w" as ":W" - so I have to remap it to correct this typo:
+  nmap :W :w
+"
+" Are you used to the Unix commands "alias" and "which"?
+" I sometimes use these to look up my abbreviations and mappings.
+" So I need them available on the command line:
+  map :alias map
+  map :which map
+"
+" The command {number}CTRL-G show the current nuffer number, too.
+" This is yet another feature that vi does not have.
+" As I always want to see the buffer number I map it to CTRL-G.
+" Pleae note that here we need to prevent a loop in the mapping by
+" using the comamnd "noremap"!
+  noremap <C-G> 2<C-G>
+
+" Remaping <C-O> to open a file.  This shortcut is easier on the hands than
+" always typeing :n
+  map <C-O> :n 
+
+" Remmaping <C-E> to jump to the previous file
+"
+"  map <C-E> :e# 
+
+" Remmaping <C-S> to save the current file 
+"  map <C-S> :w 
+
+" Map for inserting a file block comment
+  nmap ,ifbc :r /projects/products/tr303/share/file_header_comment.c <CR>
+
+" Map for inserting a function block comment
+  nmap ,ifnbc :r /projects/products/tr303/share/function_header_comment.c <CR>
+
+"
+" ===================================================================
+" Customizing the command line
+" ===================================================================
+" Valid names for keys are:  <Up> <Down> <Left> <Right> <Home> <End>
+" <S-Left> <S-Right> <S-Up> <PageUp> <S-Down> <PageDown>  <LeftMouse>
+"
+" Many shells allow editing in "Emacs Style".
+" Although I love Vi, I am quite used to this kind of editing now.
+" So here it is - command line editing commands in emacs style:
+  cnoremap <C-A> <Home>
+  cnoremap <C-F> <Right>
+  cnoremap <C-B> <Left>
+  cnoremap <ESC>b <S-Left>
+  cnoremap <ESC>f <S-Right>
+  cnoremap <ESC><C-H> <C-W>
+"
+" Additional codes for that "English" keyboard at the Xterminal
+  cnoremap <ESC>[D <S-Left>
+  cnoremap <ESC>[C <S-Right>
+"
+" Some editing is helpful in insert mode, too:
+  inoremap <C-F> <Right>
+  inoremap <C-B> <Left>
+"
+
+"
+" ===================================================================
+" AutoCommands
+" ===================================================================
+"
+" I do not use many autocommands.  But I do test them a little...
+"
+
+set errorformat=%f:%l:\ %m
+set shellpipe=>\ %s\ 2>&1
+" F1 will step through the errorfile or grepfile
+noremap <F1> :cn  
+noremap <F2> :cp  
+nmap <F6> :grep "<cword>" *.h *.cpp *.c <CR>
+
+map <C-F12> :!ctags -R --c++-kinds=+p --fields=+iaS --extra=+q .<CR>
+
+" So the :Man command works.
+source $VIMRUNTIME/ftplugin/man.vim
+
+" 
+" Set options and add mapping such that Vim behaves a lot like MS-Windows
+"
+" Maintainer:	Bram Moolenaar <Bram@vim.org>
+" Last change:	2002 Mar 05
+
+" set the 'cpoptions' to its Vim default
+if 1	" only do this when compiled with expression evaluation
+  let s:save_cpo = &cpoptions
+endif
+set cpo&vim
+
+" set 'selection', 'selectmode', 'mousemodel' and 'keymodel' for MS-Windows
+behave mswin
+
+" backspace in Visual mode deletes selection
+vnoremap <BS> d
+
+" CTRL-X and SHIFT-Del are Cut
+vnoremap <C-X> "+x
+vnoremap <S-Del> "+x
+
+" CTRL-C and CTRL-Insert are Copy
+vnoremap <C-C> "+y
+vnoremap <C-Insert> "+y
+
+" CTRL-V and SHIFT-Insert are Paste
+map <C-V>		"+gP
+map <S-Insert>		"+gP
+
+cmap <C-V>		<C-R>+
+cmap <S-Insert>		<C-R>+
+
+" Pasting blockwise and linewise selections is not possible in Insert and
+" Visual mode without the +virtualedit feature.  They are pasted as if they
+" were characterwise instead.
+if has("virtualedit")
+  nnoremap <silent> <SID>Paste :call <SID>Paste()<CR>
+  func! <SID>Paste()
+    let ove = &ve
+    set ve=all
+    normal `^"+gPi
+    let &ve = ove
+  endfunc
+  imap <C-V>		<Esc><SID>Pastegi
+  vmap <C-V>		"-c<Esc><SID>Paste
+else
+  nnoremap <silent> <SID>Paste "=@+.'xy'<CR>gPFx"_2x
+  imap <C-V>		x<Esc><SID>Paste"_s
+  vmap <C-V>		"-c<Esc>gix<Esc><SID>Paste"_x
+endif
+imap <S-Insert>      	<C-V>
+vmap <S-Insert>      	<C-V>
+
+" Use CTRL-Q to do what CTRL-V used to do
+noremap <C-Q>		<C-V>
+
+" Use CTRL-S for saving, also in Insert mode
+noremap <C-S>		:update<CR>
+vnoremap <C-S>		<C-C>:update<CR>
+inoremap <C-S>		<C-O>:update<CR>
+
+" CTRL-Z is Undo; not in cmdline though
+noremap <C-Z> u
+inoremap <C-Z> <C-O>u
+
+" CTRL-Y is Redo (although not repeat); not in cmdline though
+noremap <C-Y> <C-R>
+inoremap <C-Y> <C-O><C-R>
+
+" Alt-Space is System menu
+if has("gui")
+  noremap <M-Space> :simalt ~<CR>
+  inoremap <M-Space> <C-O>:simalt ~<CR>
+  cnoremap <M-Space> <C-C>:simalt ~<CR>
+endif
+
+" CTRL-Tab is Next window
+noremap <C-Tab> <C-W>w
+inoremap <C-Tab> <C-O><C-W>w
+cnoremap <C-Tab> <C-C><C-W>w
+
+" CTRL-F4 is Close window
+noremap <C-F4> <C-W>c
+inoremap <C-F4> <C-O><C-W>c
+cnoremap <C-F4> <C-C><C-W>c
+
+" restore 'cpoptions'
+set cpo&
+if 1
+  let &cpoptions = s:save_cpo
+  unlet s:save_cpo
+endif
+
+
