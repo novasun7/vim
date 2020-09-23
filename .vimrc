@@ -37,18 +37,13 @@ else
    source $HOME/.vim/autocommands
    if uname == 'Linux'
       set guifont=AndaleMono\ 16
-   else
-      "MacOS
+   else "MacOS
       set guifont=Menlo:h16
    endif
 endif
 
-
-
 " Basic appearance
 syntax enable
-"If not using a terminal with the Solarized color scheme
-"let g:solarized_termcolors=256
 set background=dark
 colorscheme solarized
 call togglebg#map("<F5>")
@@ -62,14 +57,14 @@ if has("gui_running") || has("gui_macvim")
    " MacVim gui specific stuff appears towards the end of this if block.
 
    " My tweaks to Solarized colorscheme
-   hi ErrorMsg guifg=#8c322f guibg=#eeddcc
-   hi LineNr   guifg=#5a5a5d
-   hi Search   guifg=#855900 guibg=grey70
-   hi Comment  gui=italic guifg=#588e75
-   hi SpecialComment gui=italic guifg=#588e75
-   hi CursorLineNr gui=NONE guifg=#0fcc88
-   hi VimGroup gui=bold
-   hi CursorLine guibg=#06303f 
+   "hi ErrorMsg guifg=#8c322f guibg=#eeddcc
+   "hi LineNr   guifg=#5a5a5d
+   "hi Search   guifg=#855900 guibg=grey70
+   hi Comment  gui=italic guifg=darkgreen
+   hi SpecialComment gui=italic guifg=darkgreen
+   "hi CursorLineNr gui=NONE guifg=#0fcc88
+   "hi VimGroup gui=bold
+   "hi CursorLine guibg=#06303f 
 
    " More contrast between active and inactive windows
    hi StatusLineNC guifg=#455b63
@@ -91,7 +86,7 @@ if has("gui_running") || has("gui_macvim")
    set menuitems=50
 
    " Sometimes it's handy to see hidden chars
-   set list 
+   "set list 
    "set listchars=tab:▸\ ,eol:¶,trail:·,extends:>,precedes:<,nbsp:·
    set listchars=tab:→\ ,eol:¬,trail:·,extends:>,precedes:<,nbsp:·,space:·
 
@@ -113,18 +108,19 @@ if has("gui_running") || has("gui_macvim")
 
 else
    " This is console Vim.
-   hi LineNr ctermfg=8
-   hi Normal ctermfg=7
-   hi Comment cterm=italic ctermfg=2
-   hi Search   term=reverse ctermbg=5 ctermfg=0
+   "hi LineNr ctermfg=4
+   "hi Normal ctermfg=7
+   "hi Comment cterm=italic
+   hi Search  ctermbg=5 ctermfg=0
 
    "hi StatusLine   term=bold,reverse cterm=bold,reverse ctermfg=238 ctermbg=253 gui=bold,reverse guifg=#455354 guibg=fg
-   hi StatusLine   term=bold,reverse cterm=bold,reverse ctermfg=238 ctermbg=253
+   "hi StatusLine   term=bold,reverse cterm=bold,reverse ctermfg=238 ctermbg=253
    "hi StatusLineNC term=reverse cterm=reverse ctermfg=244 ctermbg=232 gui=reverse guifg=#808080 guibg=#080808
-   hi StatusLineNC term=reverse cterm=reverse ctermfg=244 ctermbg=232 gui=reverse
+   "hi StatusLineNC term=reverse cterm=reverse ctermfg=244 ctermbg=232 gui=reverse
 
-   "terminal options
-   set t_Co=256
+   "If not using a terminal with the Solarized color scheme
+   "let g:solarized_termcolors=256
+   "set t_Co=256
 
 endif
 
