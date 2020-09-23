@@ -111,7 +111,7 @@ else
    "hi LineNr ctermfg=4
    "hi Normal ctermfg=7
    hi Comment cterm=italic ctermfg=8
-   hi Search  ctermbg=5 ctermfg=0
+   hi Search  ctermbg=0 ctermfg=3
 
    "hi StatusLine   term=bold,reverse cterm=bold,reverse ctermfg=238 ctermbg=253 gui=bold,reverse guifg=#455354 guibg=fg
    "hi StatusLine   term=bold,reverse cterm=bold,reverse ctermfg=238 ctermbg=253
