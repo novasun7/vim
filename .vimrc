@@ -29,8 +29,6 @@ if has("win32") || has("win16")
    endif
 
    set guifont=Consolas:h12 
-   "set guifont=Courier_New:h12 
-   "set guifont=Source_Code_Pro:h11
 
 else
    let uname = substitute(system('uname'), '\n', '', '')
@@ -44,18 +42,13 @@ endif
 
 " Basic appearance
 syntax enable
-"set background=dark
-"colorscheme solarized
-"call togglebg#map("<F5>")
-colors dim
-
-" Enable italic in terminal
-let &t_ZH="\e[3m"
-let &t_ZR="\e[23m"
 
 if has("gui_running") || has("gui_macvim")
    " GUI is running or is about to start.
    " MacVim gui specific stuff appears towards the end of this if block.
+   set background=dark
+   colorscheme solarized
+   call togglebg#map("<F5>")
 
    " My tweaks to Solarized colorscheme
    "hi ErrorMsg guifg=#8c322f guibg=#eeddcc
@@ -109,15 +102,25 @@ if has("gui_running") || has("gui_macvim")
 
 else
    " This is console Vim.
-   "hi LineNr ctermfg=4
-   "hi Normal ctermfg=7
-   hi Comment cterm=italic ctermfg=2
-   hi Search  ctermbg=0 ctermfg=3
+   colorscheme dim
 
-   "hi StatusLine   term=bold,reverse cterm=bold,reverse ctermfg=238 ctermbg=253 gui=bold,reverse guifg=#455354 guibg=fg
-   "hi StatusLine   term=bold,reverse cterm=bold,reverse ctermfg=238 ctermbg=253
+   " Enable italic in terminal
+   let &t_ZH="\e[3m"
+   let &t_ZR="\e[23m"
+
+   "Tweaks to the above scheme
+   hi LineNr  cterm=italic ctermfg=8
+   hi Comment cterm=italic ctermfg=2
+   hi PreProc cterm=bold   ctermfg=4
+   hi Search  cterm=bold   ctermbg=3 ctermfg=0
+   hi Type    cterm=bold   ctermfg=7
+
+   "hi StatusLine   cterm=bold,reverse ctermfg=0   ctermbg=7
+   hi StatusLineNC cterm=reverse ctermfg=6 ctermbg=8
    "hi StatusLineNC term=reverse cterm=reverse ctermfg=244 ctermbg=232 gui=reverse guifg=#808080 guibg=#080808
    "hi StatusLineNC term=reverse cterm=reverse ctermfg=244 ctermbg=232 gui=reverse
+   hi DiffChange   cterm=reverse   ctermfg=4 ctermbg=0
+   hi DiffText     cterm=reverse,italic   ctermfg=4 ctermbg=7
 
    "If not using a terminal with the Solarized color scheme
    "let g:solarized_termcolors=256
