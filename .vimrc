@@ -44,9 +44,10 @@ endif
 
 " Basic appearance
 syntax enable
-set background=dark
-colorscheme solarized
-call togglebg#map("<F5>")
+"set background=dark
+"colorscheme solarized
+"call togglebg#map("<F5>")
+colors dim
 
 " Enable italic in terminal
 let &t_ZH="\e[3m"
@@ -60,8 +61,8 @@ if has("gui_running") || has("gui_macvim")
    "hi ErrorMsg guifg=#8c322f guibg=#eeddcc
    "hi LineNr   guifg=#5a5a5d
    "hi Search   guifg=#855900 guibg=grey70
-   hi Comment  gui=italic guifg=darkgreen
-   hi SpecialComment gui=italic guifg=darkgreen
+   hi Comment  gui=italic guifg=#00a000 
+   hi SpecialComment gui=italic guifg=#00a000
    "hi CursorLineNr gui=NONE guifg=#0fcc88
    "hi VimGroup gui=bold
    "hi CursorLine guibg=#06303f 
