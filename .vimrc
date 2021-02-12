@@ -126,6 +126,7 @@ else
    hi PreProc cterm=bold   ctermfg=4
    hi Search  cterm=bold   ctermbg=3 ctermfg=0
    hi Type    cterm=none   ctermfg=7
+   hi TODO    cterm=bold   ctermfg=1
 
    "hi StatusLine   cterm=bold,reverse ctermfg=0   ctermbg=7
    hi StatusLineNC cterm=reverse ctermfg=6 ctermbg=8
