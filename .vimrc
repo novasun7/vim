@@ -50,6 +50,11 @@ if has("gui_running") || has("gui_macvim")
    colorscheme solarized
    call togglebg#map("<F5>")
 
+   " Set Airline theme
+   "AirlineTheme <theme name> i.e., AirlineTheme solarized
+   AirlineTheme solarized
+   let g:airline_solarized_bg='dark'
+
    " My tweaks to Solarized colorscheme
    "hi ErrorMsg guifg=#8c322f guibg=#eeddcc
    "hi LineNr   guifg=#5a5a5d
@@ -102,6 +107,13 @@ if has("gui_running") || has("gui_macvim")
 
 else
    " This is console Vim.
+
+   " Turn off Airline in console mode
+   "AirlineToggle - this doesn't work here for some reason
+    "HACK HACK HACK
+    "Toggle Airline using timer.
+   let timer=timer_start(2000,'DelayedSetAirline')
+
    colorscheme dim
 
    " Enable italic in terminal
@@ -113,7 +125,7 @@ else
    hi Comment cterm=italic ctermfg=2
    hi PreProc cterm=bold   ctermfg=4
    hi Search  cterm=bold   ctermbg=3 ctermfg=0
-   hi Type    cterm=bold   ctermfg=7
+   hi Type    cterm=none   ctermfg=7
 
    "hi StatusLine   cterm=bold,reverse ctermfg=0   ctermbg=7
    hi StatusLineNC cterm=reverse ctermfg=6 ctermbg=8
@@ -283,7 +295,6 @@ set history=50
 " Filenames for the tag command, separated by spaces or commas.
 set tags=./tags,tags
 
-
 "
 " User-defined commands
 "
@@ -312,4 +323,12 @@ command! BW bp\|bw \#
 "    autocmd!
 "    autocmd BufEnter,WinEnter * call Whitespace()
 "augroup END
+
+"HACK HACK HACK
+"Disable Airline on console using timer.
+"Doesn't work if we disable in initial check for gui at start of this file.
+function DelayedSetAirline(timer)
+    AirlineToggle
+endfunction
+
 
