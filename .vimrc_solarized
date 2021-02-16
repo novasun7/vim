@@ -1,0 +1,9 @@
+"If not using a terminal with the Solarized color scheme
+let g:solarized_termcolors=256
+set t_Co=256
+set background=dark
+colorscheme Solarized
+hi Comment cterm=italic ctermfg=darkgreen
+let g:airline_solarized_bg='dark'
+AirlineTheme solarized
+
