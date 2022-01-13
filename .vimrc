@@ -17,44 +17,62 @@ filetype plugin indent on
 
 " OS detection
 if has("win32") || has("win16")
+   "echom "WIN----"
+
+   "Windows
    source $VIMRUNTIME/vimrc_example.vim
    source $VIMRUNTIME/mswin.vim
-   source $USERPROFILE/vimfiles/autocommands
+   "source $USERPROFILE/vimfiles/autocommands
 
    " These annoying mappings get turned on in mswin.vim
    " when running gui vim.
    if has("gui_running") 
+      "echom "GUI----"
       unmap <C-F>
       unmap <C-H>
-   endif
-
-   set guifont=Consolas:h12 
-
-else
-   let uname = substitute(system('uname'), '\n', '', '')
-   source $HOME/.vim/autocommands
-   if uname == 'Linux'
-      set guifont=AndaleMono\ 16
-   else "MacOS
-      set guifont=Menlo:h16
+      set guifont=Consolas:h12 
+      set guioptions-=T
+      set guioptions-=a
+      set guioptions+=b
    endif
 endif
+
+"let uname = substitute(system('uname'), '\n', '', '')
+"let uname = uname[0:4]
+"echom "uname=" uname
+
+if filereadable(expand("$HOME/.vim/autocommands"))
+   "echom "PT1"
+   source $HOME/.vim/autocommands
+   source $HOME/.vim/.vimrc_colors
+elseif filereadable(expand("%USERPROFILE%/.vim/autocommands"))
+   "echom "PT2"
+   source $HOME/.vim/autocommands
+   source $HOME/.vim/.vimrc_colors
+elseif filereadable(expand("$HOME/vimfiles/autocommands"))
+   "echom "PT3"
+   source $HOME/vimfiles/autocommands
+   source $HOME/vimfiles/.vimrc_colors
+elseif filereadable(expand("%USERPROFILE%/vimfiles/autocommands"))
+   "echom "PT4"
+   source $HOME/vimfiles/autocommands
+   source $HOME/vimfiles/.vimrc_colors
+endif
+
+"if uname == "Linux"
+   " Linux
+"   set guifont=AndaleMono\ 16
+"elseif uname == "Darwi"
+   " MACOS
+"   set guifont=Menlo:h16
+"else
+   " Unknown OS?
+"endif
 
 " Basic appearance
 syntax enable
 
-" Set colors
-source $HOME/.vim/.vimrc_colors
-
-" Lightline plugin configuration
-"let g:lightline = {
-"       \ 'colorscheme': 'solarized',
-"       \ }
-
-" Don't need to show insert mode anymore, lightline does it in the status line.
-"set noshowmode
-
-"Statusline options
+"Statusline options - if not using Airline
 " %m=modified flag, %r=readonly flag, %h=help buffer flag, %w=preview window flag
 " ff=line ending type (unix, dos)
 set statusline=%F%m%r%h%w%=\ [Type:%Y]\ [LE:%{&ff}]\ [Buf:%n]\ [Line:%l/%L\ %p%%]\ [Col:%v]
