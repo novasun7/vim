@@ -2,25 +2,25 @@
 " Basic appearance
 "syntax enable
 
-set background=light
+set background=dark
 colorscheme solarized
 call togglebg#map("<F5>")
 
 "AirlineTheme solarized
-"let g:airline_solarized_bg='light'
+"let g:airline_solarized_bg='dark'
 
 if has("gui_running") || has("gui_macvim")
    "echom "GUI"
    " GUI is running or is about to start.
    " MacVim gui specific stuff appears towards the end of this if block.
-   "set background=light
+   "set background=dark
    "colorscheme solarized
    "call togglebg#map("<F5>")
 
    " Set Airline theme
    "AirlineTheme <theme name> i.e., AirlineTheme solarized
    "AirlineTheme solarized
-   "let g:airline_solarized_bg='light'
+   "let g:airline_solarized_bg='dark'
 
    " My tweaks to Solarized colorscheme
    "hi ErrorMsg guifg=#8c322f guibg=#eeddcc
