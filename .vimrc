@@ -267,6 +267,7 @@ function! GetCurrentMode()
     let l:mode_code = mode()
     return get(g:current_modes, l:mode_code, l:mode_code)
 endfunction
+"set statusline=%F%m%r%h%w%=\ [Type:%Y]\ [LE:%{&ff}]\ [Buf:%n]\ [Line:%l/%L\ %p%%]\ [Col:%v]
 
 set statusline=%F
 set statusline+=%m
@@ -277,6 +278,7 @@ set statusline+=\TYPE:%Y\|
 set statusline+=\ENC:%{&fileencoding?&fileencoding:&encoding}\|
 set statusline+=\LE:%{&fileformat}\|
 set statusline+=\%3.3p%%\|
-set statusline+=\L:%4.4l/%L\|C:%3.3c\|
+set statusline+=\L:%4.4l/%L%3.3p%%\|
+set statusline+=C:%3.3c\|
 set statusline+=%{GetCurrentMode()}
 
