@@ -9,8 +9,37 @@ set termencoding=utf-8
 set encoding=utf-8 nobomb
 scriptencoding utf-8
 
-" Load pathogen plugin installer
-"execute pathogen#infect()
+" =====================================================================
+" vim-plug plugins
+" =====================================================================
+" Plugin directory is optional
+call plug#begin()
+
+" Declare the list of plugins.
+" These are just some examples:
+"    Plug 'tpope/vim-sensible'
+"    Plug 'junegunn/seoul256.vim'
+"
+" Sample colorschemes
+"   Solarized 8 (Optimized, faster rendering, true color support)
+"   Plug 'lifepillar/vim-solarized8'
+"   Plug 'joshdick/onedark.vim'
+Plug 'StarryLeo/starry-vim-colorschemes'
+
+" List ends here. Plugins become visible to Vim after this call.
+call plug#end()
+" =====================================================================
+
+" If Colorscheme contains 'solarized':
+
+" Fixes color palette issues for standard 256-color terminal setups
+let g:solarized_termcolors=256
+
+" --- Solarized Configuration ---
+syntax enable
+set background=dark
+colorscheme solarized8
+hi Comment cterm=italic ctermfg=2 gui=italic guifg=#00a000
 
 filetype plugin indent on
 "syntax on
@@ -20,8 +49,8 @@ if has("win32") || has("win16")
    "echom "WIN----"
 
    "Windows
-   source $VIMRUNTIME/vimrc_example.vim
-   source $VIMRUNTIME/mswin.vim
+   "source $VIMRUNTIME/vimrc_example.vim
+   "source $VIMRUNTIME/mswin.vim
    "source $USERPROFILE/vimfiles/autocommands
 
    " These annoying mappings get turned on in mswin.vim
@@ -37,45 +66,22 @@ if has("win32") || has("win16")
    endif
 endif
 
-"let uname = substitute(system('uname'), '\n', '', '')
-"let uname = uname[0:4]
-"echom "uname=" uname
-
-if filereadable(expand("$HOME/.vim/autocommands"))
-   "echom "PT1"
-   source $HOME/.vim/autocommands
-   source $HOME/.vim/.vimrc_colors
-elseif filereadable(expand("%USERPROFILE%/.vim/autocommands"))
-   "echom "PT2"
-   source $HOME/.vim/autocommands
-   source $HOME/.vim/.vimrc_colors
-elseif filereadable(expand("$HOME/vimfiles/autocommands"))
-   "echom "PT3"
-   source $HOME/vimfiles/autocommands
-   source $HOME/vimfiles/.vimrc_colors
-elseif filereadable(expand("%USERPROFILE%/vimfiles/autocommands"))
-   "echom "PT4"
-   source $HOME/vimfiles/autocommands
-   source $HOME/vimfiles/.vimrc_colors
-endif
-
-"if uname == "Linux"
+let uname = substitute(system('uname'), '\n', '', '')
+let uname = uname[0:4]
+if uname == "Linux"
    " Linux
-"   set guifont=AndaleMono\ 16
-"elseif uname == "Darwi"
+   set guifont=AndaleMono\ 16
+elseif uname == "Darwi"
    " MACOS
-"   set guifont=Menlo:h16
-"else
+   set guifont=Menlo:h16
+else
    " Unknown OS?
-"endif
+endif
 
 " Basic appearance
 syntax enable
 
-"Statusline options - if not using Airline
-" %m=modified flag, %r=readonly flag, %h=help buffer flag, %w=preview window flag
-" ff=line ending type (unix, dos)
-set statusline=%F%m%r%h%w%=\ [Type:%Y]\ [LE:%{&ff}]\ [Buf:%n]\ [Line:%l/%L\ %p%%]\ [Col:%v]
+" Statusline setup is at end of file now
 
 " Set behavior for mouse and selection (yes even on non-Windows systems)
 behave mswin
@@ -229,23 +235,48 @@ command! BD bp\|bd \#
 command! BW bp\|bw \# 
 
 
-" This shows whitespace characters but doesn't work perfectly.
+"-----------------------------------------------------------------------------------------------
+"Statusline options
+" %m=modified flag, %r=readonly flag, %h=help buffer flag, %w=preview window flag
+" ff=line ending type (unix, dos)
+"set statusline=%F%m%r%h%w%=\ [Type:%Y]\ [LE:%{&ff}]\ [Buf:%n]\ [Line:%l/%L\ %p%%]\ [Col:%v]
 
-"function! Whitespace()
-"    if !exists('b:ws')
-"        highlight Conceal ctermbg=NONE ctermfg=240 cterm=NONE guibg=NONE guifg=#585858 gui=NONE
-"        highlight link Whitespace Conceal
-"        let b:ws = 1
-"    endif
-"
-"    syntax clear Whitespace
-"    syntax match Whitespace / / containedin=ALL conceal cchar=·
-"    setlocal conceallevel=2 concealcursor=c
-"endfunction
-"
-"augroup Whitespace
-"    autocmd!
-"    autocmd BufEnter,WinEnter * call Whitespace()
-"augroup END
+function! GitBranch()
+  return system("git rev-parse --abbrev-ref HEAD 2>/dev/null | tr -d '\n'")
+endfunction
 
+function! StatuslineGit()
+  let l:branchname = GitBranch()
+  return strlen(l:branchname) > 0?''.l:branchname.'':''
+endfunction
+
+" Dictionary mapping short codes to full mode names
+let g:current_modes = {
+    \ 'n'  : 'NORM',
+    \ 'v'  : 'VISU',
+    \ 'V'  : 'VLIN',
+    \ ' '  : 'VBLK',
+    \ 'i'  : 'INS ',
+    \ 'R'  : 'REPL',
+    \ 'Rv' : 'VREP',
+    \ 'c'  : 'CMD ',
+    \ }
+
+" Function to return the current mode name safely
+function! GetCurrentMode()
+    let l:mode_code = mode()
+    return get(g:current_modes, l:mode_code, l:mode_code)
+endfunction
+
+set statusline=%F
+set statusline+=%m
+set statusline+=%=%r%=
+set statusline+=\|BR:%{StatuslineGit()}\|
+set statusline+=\BUF:%n\|
+set statusline+=\TYPE:%Y\|
+set statusline+=\ENC:%{&fileencoding?&fileencoding:&encoding}\|
+set statusline+=\LE:%{&fileformat}\|
+set statusline+=\%3.3p%%\|
+set statusline+=\L:%4.4l/%L\|C:%3.3c\|
+set statusline+=%{GetCurrentMode()}
 

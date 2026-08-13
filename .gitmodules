@@ -1,6 +1,3 @@
-[submodule "pack/dist/start/vim-airline"]
-	path = pack/dist/start/vim-airline
-	url = https://github.com/vim-airline/vim-airline
-[submodule "pack/dist/start/vim-airline-themes"]
-	path = pack/dist/start/vim-airline-themes
-	url = https://github.com/vim-airline/vim-airline-themes
+[submodule "plugged/vim-solarized8"]
+	path = plugged/vim-solarized8
+	url = https://github.com/lifepillar/vim-solarized8.git
