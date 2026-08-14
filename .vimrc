@@ -271,14 +271,14 @@ endfunction
 
 set statusline=%F
 set statusline+=%m
-set statusline+=%=%r%=
+set statusline+=%=%r
 set statusline+=\|BR:%{StatuslineGit()}\|
 set statusline+=\BUF:%n\|
 set statusline+=\TYPE:%Y\|
 set statusline+=\ENC:%{&fileencoding?&fileencoding:&encoding}\|
 set statusline+=\LE:%{&fileformat}\|
-set statusline+=\%3.3p%%\|
-set statusline+=\L:%4.4l/%L%3.3p%%\|
+set statusline+=\L:%4.4l/%L\|
 set statusline+=C:%3.3c\|
+set statusline+=%3.3p%%\|
 set statusline+=%{GetCurrentMode()}
 
